@@ -1,0 +1,29 @@
+.tasks {
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  .button {
+    background-color: rgba(7, 103, 255, 0.3);
+    border: 1px solid #FFFFFF;
+    cursor: pointer;
+    height: 70px;
+    width: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: 0.4s ease-out;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}

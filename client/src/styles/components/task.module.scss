@@ -1,0 +1,54 @@
+.task {
+  width: 29%;
+  min-width: 200px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 20px;
+  margin: 10px;
+
+  .header {
+    display: flex;
+    justify-content: flex-end;
+
+    .status {
+      border-radius: 15px;
+      height: 20px;
+      width: 20px;
+    }
+
+    .completed {
+      background-color: #25d805;
+    }
+    .notCompleted {
+      background-color: #d8050a;
+    }
+
+    .checkboxContainer {
+      display: flex;
+      align-items: center;
+      .checkboxTitle {
+        font-size: 12px;
+        color: #31ff16;
+        margin-right: 5px;
+      }
+      .checkbox {
+        width: auto;
+        margin: 0;
+      }
+    }
+  }
+
+  .field {
+    margin: 10px 0;
+
+    .fieldTitle {
+      color: #f4ee37;
+      margin-bottom: 2px;
+      font-weight: bold;
+    }
+
+    .fieldValue {
+      font-style: italic;
+    }
+  }
+}

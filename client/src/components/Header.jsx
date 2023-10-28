@@ -1,0 +1,50 @@
+import styles from '@/styles/components/header.module.scss';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AppAPIContext } from '@/store/app.context.jsx';
+import ButtonUI from './UI/ButtonUI.jsx';
+
+const Header = ({isAdmin = false}) => {
+  const appAPICtx = useContext(AppAPIContext);
+
+  /////////////////////////////////////
+
+  const onSortedByChange = (event) => {
+    appAPICtx.setTaskSortBy(event.target.value);
+  }
+
+  const onSortedDirectionChange = (event) => {
+    appAPICtx.setTaskSortDirection(event.target.value);
+  }
+
+  /////////////////////////////////////
+
+  const navigate = useNavigate();
+  const navigateToLogin = () => {
+    navigate('/login');
+  }
+
+  /////////////////////////////////////
+
+  return (
+    <div className={styles.header}>
+      <div className={styles.sorting}>
+        <div className={styles.sortingTitle}>Sorting</div>
+        <select name="sorting" onChange={onSortedByChange}>
+          <option value="username">By Username</option>
+          <option value="email">By Email</option>
+          <option value="completed">By Completed</option>
+        </select>
+        <select name="sortingDirection" onChange={onSortedDirectionChange}>
+          <option value="ASC">ASC</option>
+          <option value="DESC">DESC</option>
+        </select>
+      </div>
+      <div className={styles.btnContainer}>
+        <ButtonUI onClick={navigateToLogin}>LOG IN</ButtonUI>
+      </div>
+    </div>
+  )
+}
+
+export default Header;
