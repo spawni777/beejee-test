@@ -90,7 +90,9 @@ const editTask = async (req, res, next) => {
       return res.end('Not Found');
     }
 
-    task.edited = (text !== undefined) && (text !== task.text);
+    if (!task.edited) {
+      task.edited = (text !== undefined) && (text !== task.text);
+    }
     task.text = text ?? task.text;
     task.completed = completed ?? task.completed;
 

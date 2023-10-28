@@ -26,11 +26,17 @@ const Task = ({
   const appAPICtx = useContext(AppAPIContext);
 
   const updateTask = async () => {
-    await appAPICtx.updateTask({
-      id,
-      completed: updatedCompleted,
-      text: updatedText
-    })
+    try {
+      await appAPICtx.updateTask({
+        id,
+        completed: updatedCompleted,
+        text: updatedText
+      });
+
+      console.log('Updated successfully...')
+    } catch (err) {
+      alert('Something went wrong...')
+    }
   }
 
   return (

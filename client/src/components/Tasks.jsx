@@ -28,6 +28,7 @@ const Tasks = ({isAdmin = false}) => {
             completed={task.completed}
             isAdmin={isAdmin}
             edited={task.edited}
+            id={task.id}
           />
         ))}
       </div>
