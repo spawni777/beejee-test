@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppAPIContext } from '@/store/app.context.jsx';
 import ButtonUI from './UI/ButtonUI.jsx';
+import Cookies from 'js-cookie';
 
 const Header = ({isAdmin = false}) => {
   const appAPICtx = useContext(AppAPIContext);
@@ -20,11 +21,14 @@ const Header = ({isAdmin = false}) => {
   /////////////////////////////////////
 
   const navigate = useNavigate();
-  const navigateToLogin = () => {
+
+  const onBtnPress = () => {
+    if (isAdmin) {
+      Cookies.remove('AUTH');
+
+    }
     navigate('/login');
   }
-
-  /////////////////////////////////////
 
   return (
     <div className={styles.header}>
@@ -41,7 +45,7 @@ const Header = ({isAdmin = false}) => {
         </select>
       </div>
       <div className={styles.btnContainer}>
-        <ButtonUI onClick={navigateToLogin}>LOG IN</ButtonUI>
+        <ButtonUI onClick={onBtnPress}>{ isAdmin ? 'LOG OUT' : 'LOG IN' }</ButtonUI>
       </div>
     </div>
   )

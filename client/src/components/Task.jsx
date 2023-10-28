@@ -33,7 +33,7 @@ const Task = ({
         text: updatedText
       });
 
-      console.log('Updated successfully...')
+      alert('Updated successfully!')
     } catch (err) {
       alert('Something went wrong...')
     }
