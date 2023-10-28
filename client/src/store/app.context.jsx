@@ -1,74 +1,44 @@
-import { createContext, useEffect, useState } from 'react';
-import { PropTypes } from 'prop-types';
-import { createTaskAPI, editTaskAPI, getTasksAPI } from '../api/tasks.js';
+import { create } from 'zustand';
+import { createTaskAPI, editTaskAPI, getTasksAPI } from '@/api/tasks.js';
 
-export const AppDataContext = createContext({});
-export const AppAPIContext = createContext({});
+const useAppStore = create((set, get) => ({
+  tasks: [],
+  currentPage: 0,
+  isLastPage: true,
+  tasksSortedBy: 'username',
+  tasksSortDirection: 'ASC',
+  changeSortedBy(sortedBy) {
+    set({tasksSortedBy: sortedBy});
+    get().getTasksPage();
+  },
+  changeSortDirection(sortedDirection) {
+    set({sortedDirection: sortedDirection});
+    get().getTasksPage();
+  },
+  goToPage: (page) => {
+    set({ currentPage: Math.max(0, page) });
+    get().getTasksPage();
+  },
+  getTasksPage: async () => {
+    const {currentPage, tasksSortedBy, tasksSortDirection} = get();
+    const {data} = await getTasksAPI(3, currentPage, tasksSortedBy, tasksSortDirection);
 
-const AppContextProvider = ({children}) => {
-  const [tasks, setTasks] = useState([]);
-  const [curTasksPage, setCurTasksPage] = useState(0);
-  const [isEnd, setIsEnd] = useState(true);
-
-  const [taskSortBy, setTaskSortBy] = useState('username');
-  const [taskSortDirection, setTaskSortDirection] = useState('ASC');
-
-  const getTasksPage = async () => {
-    const {data} = await getTasksAPI(3, curTasksPage, taskSortBy, taskSortDirection);
-
-    setTasks(data.tasks)
-    setIsEnd(data.isEnd);
-  }
-
-  useEffect(() => {
-    getTasksPage();
-  }, [taskSortBy, taskSortDirection, curTasksPage]);
-
-  const goToPage = (page) => {
-    setCurTasksPage(Math.max(0, page));
-  }
-
-  const createTask = async (form) => {
+    set({ tasks: data.tasks });
+    set({ isLastPage: data.isLastPage });
+  },
+  createTask: async (form) => {
     await createTaskAPI(form.username, form.email, form.text);
 
-    getTasksPage();
-  }
-
-  const updateTask = async (form) => {
+    get().getTasksPage();
+  },
+  updateTask: async (form) => {
     await editTaskAPI(form.id, form.text, form.completed);
 
-    getTasksPage();
-  }
+    get().getTasksPage();
+  },
+}))
 
-  /////////////////////////////////////
+// Fetch that gets the current bears from api
+getTasksAPI().then(({data}) => useAppStore.setState({ tasks: data.tasks, isLastPage: data.isLastPage }));
 
-
-  const dataValue = {
-    tasks,
-    curTasksPage,
-    isEnd,
-    taskSortBy,
-    taskSortDirection,
-
-  };
-
-  const APIValue = {
-    setTaskSortBy,
-    setTaskSortDirection,
-    goToPage,
-    createTask,
-    updateTask,
-  }
-
-  return <AppDataContext.Provider value={ dataValue }>
-    <AppAPIContext.Provider value={ APIValue }>
-      { children }
-    </AppAPIContext.Provider>
-  </AppDataContext.Provider>;
-}
-
-AppContextProvider.propTypes = {
-  children: PropTypes.element.isRequired,
-};
-
-export default AppContextProvider;
+export default useAppStore;

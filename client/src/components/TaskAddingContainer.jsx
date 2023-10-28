@@ -1,13 +1,11 @@
 import styles from '@/styles/components/taskAddingBlock.module.scss';
-
-import InputUI from './UI/InputUI.jsx';
-import { useContext } from 'react';
+import InputUI from '@/components/UI/InputUI.jsx';
 import useAddTaskForm from '@/hooks/useAddTaskForm.js';
-import { AppAPIContext } from '@/store/app.context.jsx';
-import ButtonUI from './UI/ButtonUI.jsx';
+import ButtonUI from '@/components/UI/ButtonUI.jsx';
+import useAppStore from '@/store/app.context.jsx';
 
-const TaskAddingBlock = () => {
-  const appAPICtx = useContext(AppAPIContext);
+const TaskAddingContainer = () => {
+  const createTask = useAppStore((state) => state.createTask);
 
   const {
     errors,
@@ -16,9 +14,9 @@ const TaskAddingBlock = () => {
     validationSchemas
   } = useAddTaskForm();
 
-  const createTask = async (form) => {
+  const createTaskWrapped = async (form) => {
     try {
-      await appAPICtx.createTask(form);
+      await createTask(form);
       alert('Task has created successfully!');
     } catch (e) {
       console.log(e.message);
@@ -29,7 +27,7 @@ const TaskAddingBlock = () => {
   return (
     <>
       <h1>ADD NEW</h1>
-      <form className={styles.addition} onSubmit={handleSubmit(createTask)}>
+      <form className={styles.addition} onSubmit={handleSubmit(createTaskWrapped)}>
         <InputUI
           placeholder="username"
           name="username"
@@ -65,4 +63,4 @@ const TaskAddingBlock = () => {
   )
 }
 
-export default TaskAddingBlock;
+export default TaskAddingContainer;

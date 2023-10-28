@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getTasksAPI = (pageSize, page, sortBy = 'username', sortDirection = 'ASC') => {
+export const getTasksAPI = (pageSize = 3, page = 0, sortBy = 'username', sortDirection = 'ASC') => {
   return axios.get(`/api/tasks?pageSize=${ pageSize }&page=${ page }&sortBy=${ sortBy }&sortDirection=${ sortDirection }`);
 }
 

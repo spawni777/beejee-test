@@ -1,8 +1,8 @@
 import styles from '@/styles/components/task.module.scss';
-import { memo, useContext, useState } from 'react';
-import InputUI from './UI/InputUI.jsx';
-import ButtonUI from './UI/ButtonUI.jsx';
-import { AppAPIContext } from '../store/app.context.jsx';
+import { memo, useState } from 'react';
+import InputUI from '@/components/UI/InputUI.jsx';
+import ButtonUI from '@/components/UI/ButtonUI.jsx';
+import useAppStore from '@/store/app.context.jsx';
 
 const Task = ({
   username,
@@ -13,24 +13,19 @@ const Task = ({
   id,
   edited
 }) => {
-  const completedClass = completed
-    ? styles.completed
-    : styles.notCompleted;
+  const [updatedTextField, setUpdatedTextField] = useState(text);
+  const [updatedCompletedField, setUpdatedCompletedField] = useState(completed);
 
-  const [updatedText, setUpdatedText] = useState(text);
-  const [updatedCompleted, setUpdatedCompleted] = useState(completed);
+  const onTextChange = (event) => setUpdatedTextField(event.target.value);
+  const onCompletedChange = (event) => setUpdatedCompletedField(event.target.checked);
 
-  const onTextChange = (event) => setUpdatedText(event.target.value);
-  const onCompletedChange = (event) => setUpdatedCompleted(event.target.checked);
-
-  const appAPICtx = useContext(AppAPIContext);
-
-  const updateTask = async () => {
+  const updateTask = useAppStore((state) => state.updateTask)
+  const updateTaskWrapped = async () => {
     try {
-      await appAPICtx.updateTask({
+      await updateTask({
         id,
-        completed: updatedCompleted,
-        text: updatedText
+        completed: updatedCompletedField,
+        text: updatedTextField
       });
 
       alert('Updated successfully!')
@@ -38,6 +33,14 @@ const Task = ({
       alert('Something went wrong...')
     }
   }
+
+  /////////////////////////////////
+
+  const completedClass = completed
+    ? styles.completed
+    : styles.notCompleted;
+
+  /////////////////////////////////
 
   return (
     <div className={styles.task}>
@@ -83,7 +86,7 @@ const Task = ({
       </div>
 
       {isAdmin && (
-        <ButtonUI onClick={updateTask}>Save Changes</ButtonUI>
+        <ButtonUI onClick={updateTaskWrapped}>Save Changes</ButtonUI>
       )}
     </div>
   )

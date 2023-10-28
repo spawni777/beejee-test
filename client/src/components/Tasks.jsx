@@ -1,25 +1,28 @@
 import styles from '@/styles/components/tasks.module.scss';
-import { useContext } from 'react';
-import { AppAPIContext, AppDataContext } from '@/store/app.context.jsx';
 import Task from '@/components/Task.jsx';
+import useAppStore from '@/store/app.context.jsx';
 
 const Tasks = ({isAdmin = false}) => {
-  const appDataCtx = useContext(AppDataContext);
-  const appAPICtx = useContext(AppAPIContext);
+  const {
+    tasks,
+    currentPage,
+    isLastPage,
+    goToPage,
+  } = useAppStore();
 
   const goNextPage = () => {
-    appAPICtx.goToPage(appDataCtx.curTasksPage + 1);
+    goToPage(currentPage + 1);
   }
   const goPrevPage = () => {
-    appAPICtx.goToPage(appDataCtx.curTasksPage - 1);
+    goToPage(currentPage - 1);
   }
 
   return (
     <>
-      <h1>TASKS PAGE: {appDataCtx.curTasksPage}</h1>
+      <h1>TASKS PAGE: {currentPage}</h1>
 
       <div className={styles.tasks}>
-        {appDataCtx.tasks.map(task => (
+        {tasks.map(task => (
           <Task
             key={task.id}
             username={task.username}
@@ -33,7 +36,7 @@ const Tasks = ({isAdmin = false}) => {
         ))}
       </div>
       <div className={styles.buttons}>
-        {(appDataCtx.curTasksPage !== 0) && (
+        {(currentPage !== 0) && (
           <div
             className={styles.button}
             onClick={goPrevPage}
@@ -43,7 +46,7 @@ const Tasks = ({isAdmin = false}) => {
         )}
         <div/>
 
-        {!appDataCtx.isEnd && (
+        {!isLastPage && (
           <div
             className={styles.button}
             onClick={goNextPage}

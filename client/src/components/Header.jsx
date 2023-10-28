@@ -1,25 +1,21 @@
 import styles from '@/styles/components/header.module.scss';
-import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppAPIContext } from '@/store/app.context.jsx';
-import ButtonUI from './UI/ButtonUI.jsx';
-import { getLogoutAPI } from '../api/users.js';
+import ButtonUI from '@/components/UI/ButtonUI.jsx';
+import { getLogoutAPI } from '@/api/users.js';
+import useAppStore from '@/store/app.context.jsx';
 
 const Header = ({isAdmin = false}) => {
-  const appAPICtx = useContext(AppAPIContext);
-
-  /////////////////////////////////////
+  const [changeSortedBy, changeSortDirection] = useAppStore((state) => [state.changeSortedBy, state.changeSortDirection]);
 
   const onSortedByChange = (event) => {
-    appAPICtx.setTaskSortBy(event.target.value);
+    changeSortedBy(event.target.value);
   }
 
   const onSortedDirectionChange = (event) => {
-    appAPICtx.setTaskSortDirection(event.target.value);
+    changeSortDirection(event.target.value);
   }
 
   /////////////////////////////////////
-
   const navigate = useNavigate();
 
   const onBtnPress = async () => {
@@ -28,6 +24,7 @@ const Header = ({isAdmin = false}) => {
     }
     navigate('/login');
   }
+  /////////////////////////////////////
 
   return (
     <div className={styles.header}>

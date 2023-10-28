@@ -40,14 +40,14 @@ const getTasks = async (req, res, next) => {
       limit: parseInt(pageSize) + 1,
     });
 
-    const isEnd = tasks.length < parseInt(pageSize) + 1;
+    const isLastPage = tasks.length < parseInt(pageSize) + 1;
 
     if (tasks.length > pageSize) {
       tasks.pop();
     }
 
     res.send({
-      isEnd,
+      isLastPage,
       tasks,
     });
   } catch (err) {
