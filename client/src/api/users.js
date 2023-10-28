@@ -6,3 +6,7 @@ export const postLoginAPI = ({ username, password }) => {
     password,
   })
 }
+
+export const getLogoutAPI = () => {
+  return axios.get(`/api/users/logout`);
+}

@@ -3,7 +3,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppAPIContext } from '@/store/app.context.jsx';
 import ButtonUI from './UI/ButtonUI.jsx';
-import Cookies from 'js-cookie';
+import { getLogoutAPI } from '../api/users.js';
 
 const Header = ({isAdmin = false}) => {
   const appAPICtx = useContext(AppAPIContext);
@@ -22,10 +22,9 @@ const Header = ({isAdmin = false}) => {
 
   const navigate = useNavigate();
 
-  const onBtnPress = () => {
+  const onBtnPress = async () => {
     if (isAdmin) {
-      Cookies.remove('AUTH');
-
+      await getLogoutAPI();
     }
     navigate('/login');
   }

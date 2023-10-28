@@ -55,7 +55,7 @@ const TaskAddingBlock = () => {
           validationSchema={validationSchemas['text']}
         />
         {errors.text?.type === 'required' && <div className="formError"> {errors.text?.message}</div>}
-        {errors.text?.type === 'pattern' && <div className="formError"> {errors.text?.message}</div>}
+        {errors.text?.type === 'minLength' && <div className="formError"> {errors.text?.message}</div>}
 
         <div className={styles.additionBtnContainer}>
           <ButtonUI type="submit">Create</ButtonUI>
