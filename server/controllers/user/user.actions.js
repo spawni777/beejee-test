@@ -41,6 +41,17 @@ const login = async (req, res, next) => {
   }
 };
 
+const logout = async (req, res, next) => {
+  try {
+    res.clearCookie(AUTH_COOKIE_NAME);
+
+    res.send(true);
+  } catch (err) {
+    next(err);
+  }
+}
+
 module.exports = {
-  login
+  login,
+  logout
 }
