@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const {initDB, initMiddlewares, initControllers} = require('./utils/serverInitHelper');
 
 const port = process.env.PORT || 3000;
-const clientDistDir = path.join(__dirname, 'dist');
+const clientDistDir = path.join(__dirname, '..', 'client', 'dist');
 
 initDB();
 
