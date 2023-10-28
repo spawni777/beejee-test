@@ -8,7 +8,7 @@ export const AppAPIContext = createContext({});
 const AppContextProvider = ({children}) => {
   const [tasks, setTasks] = useState([]);
   const [curTasksPage, setCurTasksPage] = useState(0);
-  const [isEnd, setIsEnd] = useState(false);
+  const [isEnd, setIsEnd] = useState(true);
 
   const [taskSortBy, setTaskSortBy] = useState('username');
   const [taskSortDirection, setTaskSortDirection] = useState('ASC');
